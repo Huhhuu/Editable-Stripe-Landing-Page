@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" shape-rendering="crispEdges">
+  <!-- Viền ngoài (Outline) -->
+  <path fill="#230c45" d="
+    M9 4h4v2H9z M19 4h4v2h-4z
+    M7 6h2v6H7z M13 6h2v3h-2z M17 6h2v3h-2z M23 6h2v6h-2z
+    M6 12h1v9H6z M25 12h1v9h-1z
+    M3 15h3v1H3z M26 15h3v1h-3z
+    M4 17h2v1H4z M26 17h2v1h-2z
+    M7 21h2v3H7z M23 21h2v3h-2z
+    M9 24h3v2H9z M20 24h3v2h-3z
+    M12 26h8v1h-8z
+  "/>
+
+  <!-- Thân & Mặt (Base Purple) -->
+  <path fill="#5b1e8e" d="
+    M9 6h4v3H9z M19 6h4v3h-19z
+    M7 12h18v9H7z
+    M9 21h14v3H9z
+    M12 24h8v2h-8z
+  "/>
+
+  <!-- Bên trong tai (Inner Ear - Darker Purple) -->
+  <path fill="#3a1063" d="
+    M10 7h2v3h-2z M20 7h2v3h-2z
+  "/>
+
+  <!-- Lòng trắng/xanh của mắt (Cyan/Teal) -->
+  <path fill="#00e5ff" d="
+    M9 13h4v4H9z M19 13h4v4h-4z
+  "/>
+
+  <!-- Đồng tử mắt (Dark Pupil) -->
+  <path fill="#230c45" d="
+    M11 14h2v3h-2z M21 14h2v3h-2z
+  "/>
+
+  <!-- Đốm sáng trong mắt (White highlights) -->
+  <path fill="#ffffff" d="
+    M10 14h1v1h-1z M20 14h1v1h-1z
+  "/>
+
+  <!-- Mũi hồng (Pink Nose) -->
+  <path fill="#ff7aa2" d="
+    M14 16h4v2h-4z
+  "/>
+
+  <!-- Miệng mèo (Mouth) -->
+  <path fill="#230c45" d="
+    M15 18h2v1h-2z
+    M13 19h2v1h-2z M17 19h2v1h-2z
+    M11 19h2v1h-2z M19 19h2v1h-2z
+  "/>
+
+  <!-- Râu mèo (Whiskers - White) -->
+  <path fill="#ffffff" d="
+    M7 15h2v1H7z M23 15h2v1h-2z
+    M7 17h2v1H7z M23 17h2v1h-2z
+  "/>
+</svg>
