@@ -413,7 +413,9 @@
     display: inline-flex;
   }
 
-  .stripe-header_hamburger {
+  .stripe-header_hamburger,
+  .stripe-drawer,
+  .stripe-drawer_backdrop {
     display: none;
   }
 }
@@ -431,13 +433,5 @@
 
   .stripe-header_nav-link {
     font-size: 15px;
-  }
-}
-
-@media (min-width: 1800px) {
-  .stripe-header_inner {
-    max-width: 1048px;
-    margin: 0 auto;
-    padding: 0;
   }
 }

@@ -1,148 +1,130 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, ChevronRight } from 'lucide-react';
-import { useNavStore } from '../../store/useNavStore';
 import { NAV_ITEMS } from './headerData';
 import { StripeLogo } from '../../assets/icons/StripeLogo';
 
-export function MobileDrawer() {
-  const { isMobileMenuOpen, closeMobileMenu } = useNavStore();
+export function MobileDrawer({ isOpen, onClose }) {
   const [expandedId, setExpandedId] = useState(null);
 
-  const toggleSection = (id) => {
-    setExpandedId(expandedId === id ? null : id);
+  if (!isOpen) return null;
+
+  const toggleSection = (sectionId) => {
+    setExpandedId(expandedId === sectionId ? null : sectionId);
   };
 
   return (
-    <AnimatePresence>
-      {isMobileMenuOpen && (
-        <>
-          <motion.div
-            className="stripe-drawer_backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closeMobileMenu}
-          />
+    <>
+      <div className="stripe-drawer_backdrop" onClick={onClose} />
 
-          <motion.aside
-            className="stripe-drawer"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+      <aside className="stripe-drawer">
+        <div className="stripe-drawer_header">
+          <div className="stripe-drawer_logo" onClick={onClose}>
+            <StripeLogo width={56} height={24} color="#0a2540" />
+          </div>
+          <button
+            type="button"
+            className="stripe-drawer_close"
+            onClick={onClose}
+            aria-label="Close navigation menu"
           >
-            <div className="stripe-drawer_header">
-              <div className="stripe-drawer_logo" onClick={closeMobileMenu}>
-                <StripeLogo width={56} height={24} color="#0a2540" />
-              </div>
-              <button
-                className="stripe-drawer_close"
-                onClick={closeMobileMenu}
-                aria-label="Close navigation menu"
-              >
-                <X size={22} />
-              </button>
-            </div>
+            <X size={22} />
+          </button>
+        </div>
 
-            <nav className="stripe-drawer_nav">
-              {NAV_ITEMS.map((item) => {
-                if (item.isDirectLink) {
-                  return (
-                    <a
-                      key={item.id}
-                      href={item.href}
-                      className="stripe-drawer_link stripe-drawer_link--direct"
-                      onClick={closeMobileMenu}
-                    >
-                      {item.label}
-                    </a>
-                  );
-                }
+        <nav className="stripe-drawer_nav">
+          {NAV_ITEMS.map((navItem) => {
+            if (navItem.isDirectLink) {
+              return (
+                <a
+                  key={navItem.id}
+                  href={navItem.href}
+                  className="stripe-drawer_link stripe-drawer_link--direct"
+                  onClick={onClose}
+                >
+                  {navItem.label}
+                </a>
+              );
+            }
 
-                const isExpanded = expandedId === item.id;
+            const isExpanded = expandedId === navItem.id;
 
-                return (
-                  <div key={item.id} className="stripe-drawer_accordion">
-                    <button
-                      className={`stripe-drawer_link stripe-drawer_accordion-trigger ${
-                        isExpanded ? 'stripe-drawer_accordion-trigger--open' : ''
-                      }`}
-                      onClick={() => toggleSection(item.id)}
-                    >
-                      <span>{item.label}</span>
-                      <ChevronDown
-                        size={18}
-                        className={`stripe-drawer_chevron ${
-                          isExpanded ? 'stripe-drawer_chevron--rotated' : ''
-                        }`}
-                      />
-                    </button>
+            return (
+              <div key={navItem.id} className="stripe-drawer_accordion">
+                <button
+                  type="button"
+                  className={`stripe-drawer_link stripe-drawer_accordion-trigger ${
+                    isExpanded ? 'stripe-drawer_accordion-trigger--open' : ''
+                  }`}
+                  onClick={() => toggleSection(navItem.id)}
+                >
+                  <span>{navItem.label}</span>
+                  <ChevronDown
+                    size={18}
+                    className={`stripe-drawer_chevron ${
+                      isExpanded ? 'stripe-drawer_chevron--rotated' : ''
+                    }`}
+                  />
+                </button>
 
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          className="stripe-drawer_accordion-content"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          {item.sections?.map((section, sIdx) => (
-                            <div key={sIdx} className="stripe-drawer_sub-group">
-                              <span className="stripe-drawer_sub-title">
-                                {section.title}
+                {isExpanded && (
+                  <div className="stripe-drawer_accordion-content">
+                    {navItem.sections?.map((group) => (
+                      <div key={group.title} className="stripe-drawer_sub-group">
+                        <span className="stripe-drawer_sub-title">
+                          {group.title}
+                        </span>
+                        {group.items.map((subItem) => (
+                          <a
+                            key={subItem.title}
+                            href={subItem.href}
+                            className="stripe-drawer_sub-item"
+                            onClick={onClose}
+                          >
+                            <div className="stripe-drawer_sub-item-text">
+                              <span className="stripe-drawer_sub-item-title">
+                                {subItem.title}
                               </span>
-                              {section.items.map((subItem, idx) => (
-                                <a
-                                  key={idx}
-                                  href={`#${subItem.title.toLowerCase()}`}
-                                  className="stripe-drawer_sub-item"
-                                  onClick={closeMobileMenu}
-                                >
-                                  <div className="stripe-drawer_sub-item-text">
-                                    <span className="stripe-drawer_sub-item-title">
-                                      {subItem.title}
-                                    </span>
-                                    <span className="stripe-drawer_sub-item-desc">
-                                      {subItem.desc}
-                                    </span>
-                                  </div>
-                                  <ChevronRight size={14} className="stripe-drawer_sub-arrow" />
-                                </a>
-                              ))}
+                              <span className="stripe-drawer_sub-item-desc">
+                                {subItem.desc}
+                              </span>
                             </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                            <ChevronRight
+                              size={14}
+                              className="stripe-drawer_sub-arrow"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    ))}
                   </div>
-                );
-              })}
-            </nav>
+                )}
+              </div>
+            );
+          })}
+        </nav>
 
-            <div className="stripe-drawer_actions">
-              <a
-                href="#contact-sales"
-                className="stripe-drawer_btn stripe-drawer_btn--secondary"
-                onClick={closeMobileMenu}
-              >
-                <span>Contact sales</span>
-                <ChevronRight size={14} />
-              </a>
+        <div className="stripe-drawer_actions">
+          <a
+            href="#section-9"
+            className="stripe-drawer_btn stripe-drawer_btn--secondary"
+            onClick={onClose}
+          >
+            <span>Contact sales</span>
+            <ChevronRight size={14} />
+          </a>
 
-              <a
-                href="#sign-in"
-                className="stripe-drawer_btn stripe-drawer_btn--primary"
-                onClick={closeMobileMenu}
-              >
-                <span>Sign in</span>
-                <ChevronRight size={14} />
-              </a>
-            </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+          <a
+            href="#section-9"
+            className="stripe-drawer_btn stripe-drawer_btn--primary"
+            onClick={onClose}
+          >
+            <span>Sign in</span>
+            <ChevronRight size={14} />
+          </a>
+        </div>
+      </aside>
+    </>
   );
 }
+
+export default MobileDrawer;

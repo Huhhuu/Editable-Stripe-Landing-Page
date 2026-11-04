@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { StripeLogo } from '../../assets/icons/StripeLogo';
 import { NAV_ITEMS } from './headerData';
 import { MobileDrawer } from './MobileDrawer';
-import { useNavStore } from '../../store/useNavStore';
 import { useScroll } from '../../hooks/useScroll';
 import './Header.css';
 
 export function Header() {
   const isScrolled = useScroll(15);
-  const { toggleMobileMenu } = useNavStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <>
@@ -28,13 +28,13 @@ export function Header() {
 
             <nav className="stripe-header_nav" aria-label="Main Navigation">
               <ul className="stripe-header_menu-list">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.id} className="stripe-header_menu-item">
+                {NAV_ITEMS.map((navItem) => (
+                  <li key={navItem.id} className="stripe-header_menu-item">
                     <a
-                      href={item.href || `#${item.id}`}
+                      href={navItem.href}
                       className="stripe-header_nav-link"
                     >
-                      {item.label}
+                      {navItem.label}
                     </a>
                   </li>
                 ))}
@@ -43,19 +43,20 @@ export function Header() {
           </div>
 
           <div className="stripe-header_actions">
-            <a href="#contact-sales" className="stripe-header_btn-contact">
+            <a href="#section-9" className="stripe-header_btn-contact">
               <span>Contact sales</span>
               <ChevronRight size={15} className="stripe-header_btn-arrow" />
             </a>
 
-            <a href="#sign-in" className="stripe-header_btn-signin">
+            <a href="#section-9" className="stripe-header_btn-signin">
               <span>Sign in</span>
               <ChevronRight size={15} className="stripe-header_btn-arrow" />
             </a>
 
             <button
+              type="button"
               className="stripe-header_hamburger"
-              onClick={toggleMobileMenu}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation menu"
             >
               <span className="stripe-header_hamburger-bar" />
@@ -66,10 +67,12 @@ export function Header() {
         </div>
       </header>
 
-      <MobileDrawer />
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </>
   );
 }
 
 export default Header;
-
